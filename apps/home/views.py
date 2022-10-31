@@ -3,8 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
+from django.shortcuts import redirect, render
+from .models import Provider
+from .forms import *
 
-
+###############################################################################
 @login_required(login_url="/login/")
 def index(request):
     context = {'segment': 'index'}
@@ -37,3 +40,38 @@ def pages(request):
     except:
         html_template = loader.get_template('home/page-500.html')
         return HttpResponse(html_template.render(context, request))
+
+###############################################################################
+# PROVIDERS
+###############################################################################
+def list_providers(request):
+    providers = Provider.objects.all()
+    return render(request, 'home/providers.html', {'providers': providers } )
+
+def create_provides(request):
+    form = ProviderForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('list_providers')
+
+    return render(request, 'providers-form.html', {'form': form })
+
+def update_provider(request, id):
+    provider = Provider.objects.get(codigo  = id)
+    form = ProviderForm(request.POST or None, instance=provider)
+
+    if form.is_valid():
+        form.save()
+        return redirect('list_providers')
+    return render(request, 'providers-form.html', {'form': form, 'provider': provider })
+
+def delete_provider(request, id):
+    provider = Provider.objects.get(codigo =id)
+
+    if request.method == 'POST':
+        provider.delete()
+        return redirect('list_providers')
+
+    return render(request, 'providers-delete-confirm.html', {'provider': provider })
+
+###############################################################################
