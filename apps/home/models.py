@@ -2,6 +2,7 @@ from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import User
 
+###############################################################################
 class Bank(models.Model):
     
     codigo = models.IntegerField()
@@ -9,7 +10,7 @@ class Bank(models.Model):
     codigo_ispb = models.IntegerField()
 
     def __self__(self):
-        return self.codigo
+        return self.descricao
 
 class Provider(models.Model):
 
@@ -19,7 +20,7 @@ class Provider(models.Model):
     nome_fantasia = models.CharField(max_length=100)
 
     def __self__(self):
-        return self.codigo
+        return self.razao_social
 
 class Category(models.Model):
 
@@ -28,7 +29,13 @@ class Category(models.Model):
     tipo = models.CharField(max_length=1)
 
     def __self__(self):
-        return self.codigo
+        return self.descricao
 
+class Budgets(models.Model):
 
-
+    codigo = models.IntegerField()
+    codigo_categoria = models.IntegerField()
+    codigo_banco = models.IntegerField()
+    codigo_fornecedor = models.IntegerField()
+    valor_estimado = models.fields.DecimalField(max_digits=14, decimal_places=2)
+    

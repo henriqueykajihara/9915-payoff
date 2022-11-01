@@ -287,8 +287,8 @@ function floatchart() {
                     }
                 }
             },
-            labels: ['New', 'Return'],
-            series: [39, 10],
+            labels: ['Saídas', 'Entradas'],
+            series: [674, 182],
             legend: {
                 show: false
             },
@@ -328,7 +328,7 @@ function floatchart() {
                     }
                 }
             },
-            labels: ['New', 'Return'],
+            labels: ['Faltante', 'Acumulado'],
             series: [20, 15],
             legend: {
                 show: false
@@ -374,10 +374,10 @@ function floatchart() {
                 curve: 'smooth'
             },
             series: [{
-                name: 'Arts',
+                name: 'Entradas',
                 data: [20, 50, 30, 60, 30, 50]
             }, {
-                name: 'Commerce',
+                name: 'Saídas',
                 data: [60, 30, 65, 45, 67, 35]
             }],
             legend: {

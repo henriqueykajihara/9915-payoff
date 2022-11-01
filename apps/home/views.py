@@ -75,3 +75,15 @@ def delete_provider(request, id):
     return render(request, 'providers-delete-confirm.html', {'provider': provider })
 
 ###############################################################################
+# BANKS
+###############################################################################
+def list_banks(request):
+    bank = Bank.objects.all()
+    return render(request, 'home/banks.html', {'bank': bank } )
+
+def create_bank(request, id):
+    bank = Bank.objects.get(codigo =id)
+
+    if request.method == 'POST':
+        bank.delete()
+        return redirect('list_banks')
