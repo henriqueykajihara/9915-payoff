@@ -16,17 +16,80 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10">Contas a pagar</h5>
+                                <h5 class="m-b-10">Cadastros</h5>
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="/bills_to_pay.html">Contas a pagar</a></li>
+                                <li class="breadcrumb-item"><a href="/bank_accounts.html">Contas bancárias</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- [ breadcrumb ] end -->
+
+            <!-- FORMULÁRIO DE CADASTRO start -->
+            <div class="col-md-6">
+                <div class="page-header">
+                    <form action="{% url 'create_bank_account' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="page-block">
+                            <div class="input-group mb-3">
+                                <input type="text" name="codigo" class="form-control" placeholder="Código">                    
+                            </div>
+                        </div>
+                    
+                        <div class="page-block">
+                            <div class="input-group mb-3">
+                                <input type="text" name="codigo_banco" class="form-control" placeholder="Banco">                    
+                            </div>
+                        </div>
+                    
+                        <div class="page-block">
+                            <div class="input-group mb-3">
+                                <input type="text" name="descricao" class="form-control" placeholder="Nome da conta" required>
+                            </div>
+                        </div>
+                    
+                        <div class="page-block">
+                            <div class="input-group mb-3">
+                                <input type="text" name="agencia" class="form-control" placeholder="Agência" required>                    
+                            </div>
+                        </div>
+                    
+                        <div class="page-block">
+                            <div class="input-group mb-3">
+                                <input type="text" name="conta" class="form-control" placeholder="Conta" required>
+                            </div>
+                        </div>
+                    
+                        <div class="page-block">
+                            <div class="input-group mb-3">
+                                <input type="text" name="conta_dv" class="form-control" placeholder="DV" required>
+                            </div>
+                        </div>
+                    
+                        <p>
+                            <label>Tipo de Conta: </label>
+                            <select name="tipo_conta" required id="tipo_conta">
+                                <option value selected>-</option>
+                                <option value="conta_corrente">Corrente</option>
+                                <option value="conta_poupanca">Poupança</option>
+                            </select>
+                        </p>
+                    
+                        <button type="submit" class="btn btn-block btn-primary mt-2 mb-4">Salvar</button>
+                    </form>
+                
+                    <form action="{% url 'delete_bank_account' %}" method="POST">
+                        {% csrf_token %}
+                        <button type="delete" class="btn btn-block btn-primary mt-2 mb-4">Excluir</button>
+                    </form>
+                </div>
+            </div>
+            <!-- FORMULÁRIO DE CADASTRO end -->
+
+
             <!-- [ Main Content ] start -->
             <div class="row">
                 <!-- [ basic-table ] start -->
@@ -73,7 +136,7 @@
                     </div>
                 </div>
                 <!-- [ basic-table ] end -->
-                <!-- [ Background-Utilities ] end -->
+                
             </div>
             <!-- [ Main Content ] end -->
         </div>

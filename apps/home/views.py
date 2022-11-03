@@ -8,6 +8,8 @@ from .models import Provider
 from .forms import *
 
 ###############################################################################
+# VALIDAÇÃO DAS TELAS DE LOGIN
+###############################################################################
 @login_required(login_url="/login/")
 def index(request):
     context = {'segment': 'index'}
@@ -19,8 +21,7 @@ def index(request):
 @login_required(login_url="/login/")
 def pages(request):
     context = {}
-    # All resource paths end in .html.
-    # Pick out the html file name from the url. And load that template.
+
     try:
 
         load_template = request.path.split('/')[-1]
@@ -42,13 +43,21 @@ def pages(request):
         return HttpResponse(html_template.render(context, request))
 
 ###############################################################################
-# PROVIDERS
+# BANK ACCOUNTS / Contas bancárias
+###############################################################################
+def list_banks(request):
+    banks = Bank.objects.all()
+    return render(request, 'home/bank.html', {'banks': banks } )
+
+###############################################################################
+# PROVIDERS / FORNECEDORES
 ###############################################################################
 def list_providers(request):
     providers = Provider.objects.all()
     return render(request, 'home/providers.html', {'providers': providers } )
 
-def create_provides(request):
+#------------------------------------------------------------------------------
+def create_provider(request):
     form = ProviderForm(request.POST or None)
     if form.is_valid():
         form.save()
@@ -56,6 +65,7 @@ def create_provides(request):
 
     return render(request, 'providers-form.html', {'form': form })
 
+#------------------------------------------------------------------------------
 def update_provider(request, id):
     provider = Provider.objects.get(codigo  = id)
     form = ProviderForm(request.POST or None, instance=provider)
@@ -65,6 +75,7 @@ def update_provider(request, id):
         return redirect('list_providers')
     return render(request, 'providers-form.html', {'form': form, 'provider': provider })
 
+#------------------------------------------------------------------------------
 def delete_provider(request, id):
     provider = Provider.objects.get(codigo =id)
 
@@ -75,15 +86,70 @@ def delete_provider(request, id):
     return render(request, 'providers-delete-confirm.html', {'provider': provider })
 
 ###############################################################################
-# BANKS
+# BANK ACCOUNTS / Contas bancárias
 ###############################################################################
-def list_banks(request):
-    bank = Bank.objects.all()
-    return render(request, 'home/banks.html', {'bank': bank } )
+def list_bank_accounts(request):
+    bank_account = BankAccount.objects.all()
+    return render(request, 'home/bank_accounts.html', {'bank_account': bank_account } )
 
-def create_bank(request, id):
-    bank = Bank.objects.get(codigo =id)
+#------------------------------------------------------------------------------
+def create_bank_account(request):
+    form = BankAccountForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('list_bank_accounts')
+    return render(request, 'bank_accounts.html', {'form': form})
+
+#------------------------------------------------------------------------------
+def update_bank_account(request, id):
+    bank_account = BankAccount.objects.get(codigo = id)
+    form = BankAccountForm()
+
+    if form.is_valid():
+        form.save()
+        return redirect('list_bank_accounts')
+    return render(request, 'bank_accounts.html', { 'form': form, 'bank_account': bank_account } )
+
+#------------------------------------------------------------------------------
+def delete_bank_account(request, id):
+    bank_account = BankAccount.objects.get(codigo =id)
 
     if request.method == 'POST':
-        bank.delete()
-        return redirect('list_banks')
+        bank_account.delete()
+        return redirect('list_bank_accounts')
+        
+###############################################################################
+# CATEGORIAS
+###############################################################################
+def list_categorys(request):
+    categorys = Category.objects.all()
+    return render(request, 'home/categorys.html', {'categorys': categorys } )
+
+#------------------------------------------------------------------------------
+def create_category(request):
+    form = CategoryForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('list_categorys')
+
+    return render(request, 'categorys-form.html', {'form': form })
+
+#------------------------------------------------------------------------------
+def update_category(request, id):
+    category = category.objects.get(codigo  = id)
+    form = CategoryForm(request.POST or None, instance=category)
+
+    if form.is_valid():
+        form.save()
+        return redirect('list_categorys')
+    return render(request, 'categorys-form.html', {'form': form, 'category': category })
+
+#------------------------------------------------------------------------------
+def delete_category(request, id):
+    category = Category.objects.get(codigo =id)
+
+    if request.method == 'POST':
+        category.delete()
+        return redirect('list_categorys')
+
+    return render(request, 'categorys-delete-confirm.html', {'category': category })
